@@ -6,77 +6,67 @@
 #include <malloc.h>
 #define SIZE 10
 
-int c_to_n(char c )
-{
+// из буквы в цифру 
+int c_to_n(char c ){ 
 	int n = 0;
-	if ((c >= '0') && (c <= '9'))
-	{
+	if ((c >= '0') && (c <= '9')){
 
 		n = c - '0';
 	}
-	else if ((c >= 'A') && (c <= 'Z'))
-	{
+	else if ((c >= 'A') && (c <= 'Z')){
 		n = c - 'A' + 10;
 	}
-	else if ((c >= 'a') && (c <= 'z'))
-	{
+	else if ((c >= 'a') && (c <= 'z')){
 		n =c - 'a' + 36;
 	}
-	else
-	{
+	else{
 		printf("некорекный ввод: символ не представлен в системе");
 		exit(0);
 	}
 	return(n);
 
 }
-
-int my_atoi(const char* str, int p)//из строки в символ 
-{
+// из строки в число 
+int my_atoi(const char* str, int p) { 
 	
 	int n = 0;
-	for (int i = 0; str[i] != '\0'; i++)
-	{
+	for (int i = 0; str[i] != '\0'; i++){
 
 		n = n * p + c_to_n(str[i]);
 	}
 	return(n);
 }
-void reverse(char *s)
-{
+// функция меняет строку на месте 
+void reverse(char *s){
 	int i, j;
 	char c;
-
-	for (i = 0, j = strlen(s) - 1; i < j; i++, j--)
-	{
+	// strlen() возвращает длину строки, оканчивающейся нулевым символом
+	for (i = 0, j = strlen(s) - 1; i < j; i++, j--){
 		c = s[i];
 		s[i] = s[j];
 		s[j] = c;
 	}
 }
-char n_to_c(int a)
-{
+//из цифры в букву 
+char n_to_c(int a){
 	char c;
-	if ((a >= 0) && (a <= 9))
-	{
+	if ((a >= 0) && (a <= 9)){
 		c = a + '0';
 	}
-	else if (((a >= 10) && (a <= 35)))
-	{
+	else if (((a >= 10) && (a <= 35))){
 		c = a + 55;
 	}
-	else if (((a >= 36) && (a <= 61)))
-	{
+	else if (((a >= 36) && (a <= 61))){
 		c = a + 61;
 	}
 	return(c);
 }
-char* my_itoa(char* buf, int a, int p)//из символа в строку
-{
+//из цифры  в строку
+char* my_itoa(char* buf, int a, int p) {
+
 	int i=0;
 	//printf("%d", a);
-	do 
-	{
+	do {
 		/*for (int i = 0; (a /= p) > 0; i++)
 		{
 			if ((a%10 >= '0') && (a % 10 <= '9'))
@@ -99,26 +89,32 @@ char* my_itoa(char* buf, int a, int p)//из символа в строку
 		  
 	} while ((a /= p) > 0);
 	buf[i] = '\0';
-	reverse(buf);// функция меняет строку на месте НЕ РАБОТАЕТ ВИДИМО НАДО НАПИСАТЬ 
+	reverse(buf);// функция меняет строку на месте 
 	printf("%s", buf);// обратный порядок 
 	return(buf);
 
 }
-int max_sist( char * str , char p)
-{
+// нахождение максимального символа в строке 
+int max_sist( char * str , char p){
 	char max_c=str[0];
-	for (int i = 0; i < p; ++i)
-	{
-		if (str[i] > max_c)
-		{
+	for (int i = 0; i < p; ++i){
+		if (str[i] > max_c){
 			max_c = str[i];
 		}
 	}
 	int  max_n = 0;
 	max_n = c_to_n(max_c);
-	printf("\nMaxC=%c\n", max_c);
-	printf("\nMaxD=%d\n", max_n);
+	//printf("\nMaxC=%c\n", max_c);
+	//printf("\nMaxD=%d\n", max_n);
 	return(max_n);
+}
+//чтобы символы продходили в систему 
+int check(char* str, int p) {
+	for (int i = 0; str[i] != '\0'; i++) {
+		if (str[i] > p) {
+			return(0);
+		}
+	}
 }
 int main()
 {
@@ -130,21 +126,26 @@ int main()
 	char StrSim[SIZE];
 	int i = 0;
 	char c;
-	while ((c = getch()) != '\r' )//функция getch считывает символ с консоли , но не выводит на экран , а записывает на i-тое место в
-	{
+	//функция getch считывает символ с консоли , но не выводит на экран , а записывает на i-тое место в
+	while ((c = getch()) != '\r' ) {
+	
     	putch(c);//Эта функция производит вывод прямо на экран
 		StrSim[i] = c;
 		i++;
 	}
 	StrSim[i] = '\0';
-	if (sist == 0)
-	{
+	if (sist == 0){
 		sist = max_sist( StrSim, i)+1;
 		printf("\nсистема\n%d\n", sist);
 	}
-	if ((sist > 62)||(sist<2))
-	{
+	if ((sist > 62)||(sist<2)){
 		printf("\nнекорекный ввод: система выходит за ограничения (2 <= p <= 62)");
+		exit(0);
+	}
+	int ch = 1;
+	ch= check(StrSim, sist);
+	if (ch == 0) {
+		printf("\nчисло вне заданной системы");
 		exit(0);
 	}
 	printf("\nстрока \n");
@@ -156,7 +157,7 @@ int main()
 	char *NewStr;
     NewStr = (char*)malloc(i * sizeof(char));
 	my_itoa(NewStr, chislo,  sist);
-	
+	free(NewStr);
 
 
 }
