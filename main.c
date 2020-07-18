@@ -5,48 +5,39 @@
 #include <string.h>
 #define SIZE 10
 
-char n_to_c(int a)
+int c_to_n(char c )
 {
-	char c;
-	if ((a >= 0) && (a <= 9))
+	int n = 0;
+	if ((c >= '0') && (c <= '9'))
 	{
-		c = a + '0';
-	} 
-	else if (((a >= 10) && (a <= 35)))
-	{
-		c = a + 55;
+
+		n = c - '0';
 	}
-	else if (((a >= 36) && (a <= 61)))
+	else if ((c >= 'A') && (c <= 'Z'))
 	{
-		c = a + 61;
+		n = c - 'A' + 10;
 	}
-	return(c);
+	else if ((c >= 'a') && (c <= 'z'))
+	{
+		n =c - 'a' + 36;
+	}
+	else
+	{
+		printf("ошибочка");
+		exit(0);
+	}
+	return(n);
+
 }
 
 int my_atoi(const char* str, int p)//из строки в символ 
 {
 	
 	int n = 0;
-	for(int i =0; str[i] != '\0'; i++)
-	{ 
-		if ((str[i]>='0') && (str[i] <= '9'))
-		{
-			
-			n = n * p + (str[i] - '0');
-		}
-		else if ((str[i] >= 'A') && (str[i] <= 'Z'))
-		{
-			n = n * p + (str[i] - 'A'+10);
-		}
-		else if ((str[i] >= 'a') && (str[i] <= 'z'))
-		{
-			n = n * p + (str[i] - 'a' +36);
-		}
-		else
-		{
-			printf("ошибочка");
-			exit(0);
-		}
+	for (int i = 0; str[i] != '\0'; i++)
+	{
+
+		n = n * p + c_to_n(str[i]);
 	}
 	return(n);
 }
@@ -62,11 +53,28 @@ void reverse(char *s)
 		s[j] = c;
 	}
 }
+char n_to_c(int a)
+{
+	char c;
+	if ((a >= 0) && (a <= 9))
+	{
+		c = a + '0';
+	}
+	else if (((a >= 10) && (a <= 35)))
+	{
+		c = a + 55;
+	}
+	else if (((a >= 36) && (a <= 61)))
+	{
+		c = a + 61;
+	}
+	return(c);
+}
 
 char* my_itoa(char* buf, int a, int p)//из символа в строку
 {
 	int i=0;
-	printf("%d", a);
+	//printf("%d", a);
 	do 
 	{
 		/*for (int i = 0; (a /= p) > 0; i++)
@@ -87,7 +95,7 @@ char* my_itoa(char* buf, int a, int p)//из символа в строку
 			
 		}*/
 		buf[i++] = n_to_c( a % p)  ;
-		printf("%d \t%d\t %c\n ",a, a % p, n_to_c(a % p));
+		//printf("%d \t%d\t %c\n ",a, a % p, n_to_c(a % p));
 		  
 	} while ((a /= p) > 0);
 	buf[i] = '\0';
