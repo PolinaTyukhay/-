@@ -20,7 +20,7 @@ int c_to_n(char c ){
 		n =c - 'a' + 36;
 	}
 	else{
-		printf("некорекный ввод: символ не представлен в системе");
+		printf("\nнекорекный ввод: символ не представлен в системе :%d , %c",c, c );
 		exit(0);
 	}
 	return(n);
@@ -49,7 +49,7 @@ void reverse(char *s){
 }
 //из цифры в букву 
 char n_to_c(int a){
-	char c;
+	char c=0;
 	if ((a >= 0) && (a <= 9)){
 		c = a + '0';
 	}
@@ -62,7 +62,7 @@ char n_to_c(int a){
 	return(c);
 }
 //из цифры  в строку
-char* my_itoa(char* buf, int a, int p) {
+char* my_itoa(char* buf, int a, int p, int znak) {
 
 	int i=0;
 	//printf("%d", a);
@@ -88,8 +88,12 @@ char* my_itoa(char* buf, int a, int p) {
 		//printf("%d \t%d\t %c\n ",a, a % p, n_to_c(a % p));
 		  
 	} while ((a /= p) > 0);
+	if (znak == -1) {
+		buf[i++] = '-';
+	}
 	buf[i] = '\0';
 	reverse(buf);// функция меняет строку на месте 
+	
 	printf("%s", buf);// обратный порядок 
 	return(buf);
 
@@ -97,7 +101,9 @@ char* my_itoa(char* buf, int a, int p) {
 // нахождение максимального символа в строке 
 int max_sist( char * str , char p){
 	char max_c=str[0];
-	for (int i = 0; i < p; ++i){
+	printf("\nmax_sist %s", str);
+	for (int i = 1; i < p; i++){
+		printf("\n%d\t%c\n", str[i], str[i]);
 		if (str[i] > max_c){
 			max_c = str[i];
 		}
@@ -117,6 +123,7 @@ int check(char* str, int p) {
 			return(0);
 		}
 	}
+	return(1);
 }
 int main()
 {
@@ -128,12 +135,31 @@ int main()
 	char StrSim[SIZE];
 	int i = 0;
 	char c;
+	int znak = 1;
 	//функция getch считывает символ с консоли , но не выводит на экран , а записывает на i-тое место в
 	while ((c = getch()) != '\r' ) {
 	
     	putch(c);//Эта функция производит вывод прямо на экран
-		StrSim[i] = c;
-		i++;
+		if ((c == '+')&&(i==0)) {
+			znak = 1;
+		}
+		else if ((c=='-')&&(i == 0)){
+			znak = -1;
+		}
+		else
+		{
+			if (c == 8) {
+				if (i > 0) {
+					i--;
+					StrSim[i] = '\0';
+				}
+			}
+			else {
+				StrSim[i] = c;
+				i++;
+			}
+		}
+		
 	}
 	StrSim[i] = '\0';
 	if (sist == 0){
@@ -154,11 +180,15 @@ int main()
 	printf("%s\n", StrSim);
 	int chislo=0;
 	chislo=my_atoi(StrSim, sist);
-	printf("получилось \n%d", chislo);
-	printf("\nстрока \n");
+	printf("получилось \n%d", chislo*znak);
+	printf("\n новая строка \n");
 	char *NewStr;
+	i++;// для '\0'
+	if (znak == -1) {
+		i++; // для '-'
+	}
     NewStr = (char*)malloc(i * sizeof(char));
-	my_itoa(NewStr, chislo,  sist);
+	my_itoa(NewStr, chislo,  sist, znak);
 	free(NewStr);
 
 
