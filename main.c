@@ -111,7 +111,9 @@ int max_sist( char * str , char p){
 //÷òîáû ñèìâîëû ïğîäõîäèëè â ñèñòåìó 
 int check(char* str, int p) {
 	for (int i = 0; str[i] != '\0'; i++) {
-		if (str[i] > p) {
+		int n = 0;
+		n = c_to_n(str[i]);
+		if (n > p) {
 			return(0);
 		}
 	}
