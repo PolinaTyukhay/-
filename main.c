@@ -4,7 +4,9 @@
 #include <math.h>
 #include <string.h>
 #include <malloc.h>
-#define SIZE 10
+#define SIZE 80
+#define MAX 2147483647
+
 
 // из буквы в цифру 
 int c_to_n(char c ){ 
@@ -28,11 +30,17 @@ int c_to_n(char c ){
 }
 // из строки в число 
 int my_atoi(const char* str, int p) { 
-	
-	int n = 0;
+	int max_t=MAX/p;
+	//signed int n = 0;
+	long long n = 0;
+	int ost = MAX % p;
 	for (int i = 0; str[i] != '\0'; i++){
-
+	
 		n = n * p + c_to_n(str[i]);
+		if (n > MAX) {
+			printf("Число не попадает в диапоазон допустимых значений для int ");
+			exit(0);
+		}
 	}
 	return(n);
 }
@@ -67,25 +75,9 @@ char* my_itoa(char* buf, int a, int p, int znak) {
 	int i=0;
 	//printf("%d", a);
 	do {
-		/*for (int i = 0; (a /= p) > 0; i++)
-		{
-			if ((a%10 >= '0') && (a % 10 <= '9'))
-			{
-
-				buf[i] = a % p + '0';
-			}
-			else if ((a % 10 >= 'A') && (a % 10 <= 'Z'))
-			{
-				buf[i] = a % p + 'A' - 10;
-			}
-			else if ((a % 10 >= 'a') && (a % 10 <= 'z'))
-			{
-				buf[i] = a % p + 'a' - 36;
-			}
-			
-		}*/
+		
 		buf[i++] = n_to_c( a % p)  ;
-		//printf("%d \t%d\t %c\n ",a, a % p, n_to_c(a % p));
+		
 		  
 	} while ((a /= p) > 0);
 	if (znak == -1) {
@@ -178,7 +170,7 @@ int main()
 	}
 	printf("\nстрока \n");
 	printf("%s\n", StrSim);
-	int chislo=0;
+	signed int chislo=0;
 	chislo=my_atoi(StrSim, sist);
 	printf("получилось \n%d", chislo*znak);
 	printf("\n новая строка \n");
